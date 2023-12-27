@@ -1,33 +1,36 @@
-import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState, CSSProperties } from "react";
 import axios from "axios";
 import { Book } from "./components/Book";
 import { SearchBar } from "./components/SearchBar";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const override: CSSProperties = {
+  marginLeft: "auto",
+};
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
-  console.log(import.meta.env);
-  const fetchData = async () => {
-    const { data } = await axios.get(
-      `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}&key=${
-        import.meta.env.VITE_API_KEY
-      }`
-    );
-    console.log(data);
-    setBooks(data.items);
-  };
 
-  const handleClick = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log("hi");
-    fetchData();
-  };
+    setIsLoading(true);
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_API_URL}?q=${searchTerm}&key=${
+          import.meta.env.VITE_API_KEY
+        }`
+      );
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+      setBooks(data.items);
+    } catch (err: any) {
+      setIsError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="bg-gray-200 pt-10">
@@ -37,14 +40,23 @@ function App() {
       <SearchBar
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
-        fetchData={fetchData}
-        handleClick={handleClick}
+        handleSubmit={handleSubmit}
       />
-      <div className="container mx-auto  grid grid-cols-2	gap-x-6 gap-y-20 py-10">
-        {books &&
-          books.map((book: any) => {
+      <div className="container mx-auto grid grid-cols-2 gap-x-6 gap-y-20 py-10">
+        {isLoading ? (
+          <ClipLoader
+            color="green"
+            loading={isLoading}
+            size={150}
+            cssOverride={override}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        ) : (
+          books?.map((book: any) => {
             return <Book key={book.id} book={book} />;
-          })}
+          })
+        )}
       </div>
     </div>
   );
