@@ -11,10 +11,10 @@ export const BookList: FC<BookListProps> = ({ books }) => {
   }
 
   return (
-    <>
+    <div className=" px-3 lg:mx-auto lg:container grid lg:grid-cols-2 md:grid-cols-1 gap-x-6 gap-y-20 py-10">
       {books.map((book: any) => {
         return <Book key={book.id} book={book} />;
       })}
-    </>
+    </div>
   );
 };

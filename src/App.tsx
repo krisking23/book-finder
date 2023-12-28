@@ -7,10 +7,12 @@ import { BookList } from "./components/BookList";
 
 const override: CSSProperties = {
   marginLeft: "auto",
+  marginRight: "auto",
+  marginTop: "5rem",
 };
 
 function App() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
@@ -48,7 +50,7 @@ function App() {
         setSearchTerm={setSearchTerm}
         handleSubmit={handleSubmit}
       />
-      <div className=" px-3 lg:mx-auto lg:container grid lg:grid-cols-2 md:grid-cols-1 gap-x-6 gap-y-20 py-10">
+      <div className="flex">
         {isLoading ? (
           <ClipLoader
             color="green"
