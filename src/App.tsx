@@ -1,8 +1,9 @@
 import { useState, CSSProperties } from "react";
 import axios from "axios";
-import { Book } from "./components/Book";
+
 import { SearchBar } from "./components/SearchBar";
 import ClipLoader from "react-spinners/ClipLoader";
+import { BookList } from "./components/BookList";
 
 const override: CSSProperties = {
   marginLeft: "auto",
@@ -23,14 +24,19 @@ function App() {
           import.meta.env.VITE_API_KEY
         }`
       );
-
+      console.log(data);
       setBooks(data.items);
     } catch (err: any) {
       setIsError(err);
     } finally {
       setIsLoading(false);
+      setSearchTerm("");
     }
   };
+
+  if (isError) {
+    <div>{isError}</div>;
+  }
 
   return (
     <div className="bg-gray-200 pt-10">
@@ -42,7 +48,7 @@ function App() {
         setSearchTerm={setSearchTerm}
         handleSubmit={handleSubmit}
       />
-      <div className="container mx-auto grid grid-cols-2 gap-x-6 gap-y-20 py-10">
+      <div className=" px-3 lg:mx-auto lg:container grid lg:grid-cols-2 md:grid-cols-1 gap-x-6 gap-y-20 py-10">
         {isLoading ? (
           <ClipLoader
             color="green"
@@ -53,9 +59,7 @@ function App() {
             data-testid="loader"
           />
         ) : (
-          books?.map((book: any) => {
-            return <Book key={book.id} book={book} />;
-          })
+          <BookList books={books} />
         )}
       </div>
     </div>
