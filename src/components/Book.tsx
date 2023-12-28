@@ -21,9 +21,11 @@ export const Book: FC<BookProps> = ({ book }) => {
         <h2 className="text-2xl text-slate-600">{book.volumeInfo.title}</h2>
         <span>By: {book.volumeInfo.authors && book.volumeInfo.authors[0]}</span>
         <span>Published By: {book.volumeInfo.publisher}</span>
-        <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-auto">
-          See this Book
-        </button>
+        <a href={book.volumeInfo.infoLink} target="_blank">
+          <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-auto">
+            See this Book
+          </button>
+        </a>
       </div>
     </div>
   );
