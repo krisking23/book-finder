@@ -12,7 +12,7 @@ const override: CSSProperties = {
 };
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState();
   const [searchTerm, setSearchTerm] = useState("");
   const [books, setBooks] = useState([]);
